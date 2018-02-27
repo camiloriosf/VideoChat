@@ -12,7 +12,6 @@ import Controls from './controls';
 const styles = theme => ({ // eslint-disable-line no-unused-vars
   root: {
     position: 'relative',
-    backgroundColor: 'green',
   },
   video: {
     position: 'absolute',
@@ -33,11 +32,11 @@ class Chat extends Component {
     show: true,
   }
   componentDidMount = () => {
+    this.mounted = true;
     this.delayedHideControls = _.debounce(this.hideControls, 2000);
-    this.delayedHideControls();
   }
   componentWillUnmount = () => {
-
+    this.mounted = false;
   }
   handleMouseEnter = () => {
     this.setState({ show: true });
@@ -46,7 +45,7 @@ class Chat extends Component {
     this.delayedHideControls();
   }
   hideControls = () => {
-    this.setState({ show: false });
+    if (this.mounted) this.setState({ show: false });
   }
   render() {
     const {

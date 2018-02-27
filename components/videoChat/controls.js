@@ -5,22 +5,19 @@ import PropTypes from 'prop-types';
 // material-ui imports
 import { withStyles } from 'material-ui/styles';
 import Zoom from 'material-ui/transitions/Zoom';
-import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
 import MicIcon from 'material-ui-icons/Mic';
 import MicOffIcon from 'material-ui-icons/MicOff';
 import VideocamIcon from 'material-ui-icons/Videocam';
 import VideocamOffIcon from 'material-ui-icons/VideocamOff';
-import VolumeDownIcon from 'material-ui-icons/VolumeDown';
-import SettingsIcon from 'material-ui-icons/Settings';
 
 const styles = theme => ({ // eslint-disable-line no-unused-vars
   root: {
-    backgroundColor: theme.palette.common.white,
-    opacity: 0.8,
     textAlign: 'center',
   },
-  icon: {
-    color: theme.palette.primary.main,
+  button: {
+    margin: theme.spacing.unit,
+    opacity: 0.8,
   },
 });
 
@@ -39,18 +36,12 @@ class Controls extends Component {
     return (
       <Zoom in={show}>
         <div className={classes.root} style={{ maxWidth: width }}>
-          <IconButton color="primary" aria-label="Mic" onClick={this.handleClick('mic')}>
+          <Button mini variant="fab" color="primary" aria-label="Mic" onClick={this.handleClick('mic')} className={classes.button}>
             {micOff ? <MicOffIcon /> : <MicIcon />}
-          </IconButton>
-          <IconButton color="primary" aria-label="Videocam" onClick={this.handleClick('video')}>
+          </Button>
+          <Button mini variant="fab" color="primary" aria-label="Videocam" onClick={this.handleClick('video')} className={classes.button}>
             {videoOff ? <VideocamOffIcon /> : <VideocamIcon />}
-          </IconButton>
-          <IconButton color="primary" aria-label="Volume" onClick={this.handleClick('volume')}>
-            <VolumeDownIcon />
-          </IconButton>
-          <IconButton color="primary" aria-label="Settings" onClick={this.handleClick('settings')}>
-            <SettingsIcon />
-          </IconButton>
+          </Button>
         </div>
       </Zoom>
     );

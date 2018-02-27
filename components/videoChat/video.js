@@ -13,35 +13,19 @@ const styles = theme => ({ // eslint-disable-line no-unused-vars
 });
 
 class Video extends Component {
-  state = {
-    videoSrc: null,
-  }
-  componentDidMount = () => {
-    /* eslint-disable no-undef */
-    navigator.getUserMedia =
-      navigator.getUserMedia || navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-    if (navigator.getUserMedia) {
-      navigator.getUserMedia({ video: true }, this.handleVideo, this.videoError);
-    }
-    /* eslint-enable no-undef */
-  }
-  handleVideo = (stream) => {
-    this.setState({ videoSrc: window.URL.createObjectURL(stream) });
-  }
-  videoError = (err) => {
-    console.log(`error: ${err}`);
-  }
   render() {
     const {
       classes,
       width,
+      src,
+      muted,
     } = this.props;
     return (
       <video
         width={width}
-        src={this.state.videoSrc}
+        src={src}
         autoPlay
+        muted={muted}
         className={classes.video}
       >
         <track kind="captions" />
@@ -54,9 +38,13 @@ class Video extends Component {
 Video.propTypes = {
   classes: PropTypes.object.isRequired,
   width: PropTypes.number,
+  src: PropTypes.string,
+  muted: PropTypes.bool,
 };
 
 Video.defaultProps = {
   width: 200,
+  src: '',
+  muted: false,
 };
 export default withStyles(styles)(Video);

@@ -20,6 +20,11 @@ const styles = theme => ({ // eslint-disable-line no-unused-vars
     top: 0,
     bottom: 0,
   },
+  videoLocal: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+  },
   controls: {
     position: 'absolute',
     bottom: 0,
@@ -30,15 +35,18 @@ const styles = theme => ({ // eslint-disable-line no-unused-vars
 class Chat extends Component {
   state = {
     show: true,
+    widthLocal: 100,
   }
   componentDidMount = () => {
     this.mounted = true;
     this.delayedHideControls = _.debounce(this.hideControls, 2000);
+    this.setState({ widthLocal: this.props.width / 4 < 70 ? 70 : this.props.width / 4 });
   }
   componentWillUnmount = () => {
     this.mounted = false;
   }
   handleMouseEnter = () => {
+    this.delayedHideControls.cancel();
     this.setState({ show: true });
   }
   handleMouseLeave = () => {
@@ -51,6 +59,12 @@ class Chat extends Component {
     const {
       classes,
       width,
+      fixed,
+      audio,
+      video,
+      videoPeer,
+      videoLocal,
+      onControlClick,
     } = this.props;
     return (
       <div
@@ -60,10 +74,19 @@ class Chat extends Component {
         onMouseLeave={this.handleMouseLeave}
       >
         <div className={classes.video} >
-          <Video width={width} />
+          <Video width={width} src={videoPeer} muted />
+        </div>
+        <div className={classes.videoLocal} >
+          <Video width={this.state.widthLocal} src={videoLocal} muted />
         </div>
         <div className={classes.controls}>
-          <Controls width={width} show={this.state.show} />
+          <Controls
+            onClick={onControlClick}
+            width={width}
+            show={this.state.show || fixed}
+            micOff={!audio}
+            videoOff={!video}
+          />
         </div>
       </div>
     );
@@ -72,11 +95,23 @@ class Chat extends Component {
 
 Chat.propTypes = {
   classes: PropTypes.object.isRequired,
-  width: PropTypes.any,
+  width: PropTypes.number,
+  fixed: PropTypes.bool,
+  audio: PropTypes.bool,
+  video: PropTypes.bool,
+  videoPeer: PropTypes.string,
+  videoLocal: PropTypes.string,
+  onControlClick: PropTypes.func,
 };
 
 Chat.defaultProps = {
   width: 200,
+  fixed: false,
+  audio: true,
+  video: true,
+  videoPeer: '',
+  videoLocal: '',
+  onControlClick: () => {},
 };
 
 export default withStyles(styles)(Chat);

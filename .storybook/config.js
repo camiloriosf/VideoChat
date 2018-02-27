@@ -18,9 +18,7 @@ addDecorator(story => (
 ));
 
 function loadStories() {
-  require('../stories/videoChat/video.js');
-  require('../stories/videoChat/controls.js');
-  require('../stories/videoChat/chat.js');
+  require('../stories/videoChat.js');
 }
 
 configure(loadStories, module);
